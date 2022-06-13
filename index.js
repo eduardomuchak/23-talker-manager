@@ -23,9 +23,21 @@ app.get(
   '/talker',
   rescue(async (_req, res) => {
     const talkers = await readFile('./talker.json');
+    
     if (!talkers) return res.status(HTTP_OK_STATUS).json([]);
-
     return res.status(HTTP_OK_STATUS).json(talkers);
+  }),
+);
+
+app.get(
+  '/talker/:id',
+  rescue(async (req, res) => {
+    const talkers = await readFile('./talker.json');
+    const { id } = req.params;
+    const teste = talkers.find((talker) => talker.id === Number(id));
+    
+    if (!teste) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    return res.status(200).json(teste);
   }),
 );
 
