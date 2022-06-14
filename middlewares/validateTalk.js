@@ -1,10 +1,10 @@
-const HTTP_ERROR_STATUS = 400;
+const BAD_REQUEST = 400;
 
 const validateTalk = (req, res, next) => {
   const { talk } = req.body;
   
   if (!talk) {
-    return res.status(HTTP_ERROR_STATUS).json(
+    return res.status(BAD_REQUEST).json(
       { message: 'O campo "talk" é obrigatório' },
     ); 
   }

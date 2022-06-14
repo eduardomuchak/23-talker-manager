@@ -1,4 +1,4 @@
-const HTTP_ERROR_STATUS = 400;
+const BAD_REQUEST = 400;
 
 const validateWatchedAt = (req, res, next) => {
   const { talk: { watchedAt } } = req.body;
@@ -6,13 +6,13 @@ const validateWatchedAt = (req, res, next) => {
   // Referência: https://www.regextester.com/99555
   
   if (!watchedAt) {
-    return res.status(HTTP_ERROR_STATUS).json(
+    return res.status(BAD_REQUEST).json(
       { message: 'O campo "watchedAt" é obrigatório' },
     ); 
   }
 
   if (!watchedAt.match(validDateRegex)) {
-    return res.status(HTTP_ERROR_STATUS).json(
+    return res.status(BAD_REQUEST).json(
       { message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' },
     ); 
   }
