@@ -7,6 +7,9 @@ const validatePassword = require('./middlewares/validatePassword');
 const generateLoginToken = require('./middlewares/generateLoginToken');
 const validateName = require('./middlewares/validateName');
 const validateAge = require('./middlewares/validateAge');
+const validateTalk = require('./middlewares/validateTalk');
+const validateWatchedAt = require('./middlewares/validateWatchedAt');
+const validateRate = require('./middlewares/validateRate');
 
 const app = express();
 app.use(bodyParser.json());
@@ -49,11 +52,16 @@ app.get(
   }),
 );
 
-app.post('/login', validateEmail, validatePassword, generateLoginToken);
+app.post(
+  '/login',
+  validateEmail, validatePassword, generateLoginToken,
+);
 
-app.post('/talker', validateName, validateAge, (_req, res) => res.status(
-  HTTP_OK_STATUS,
-).send('Tudo nos conformes'));
+app.post(
+  '/talker',
+  validateName, validateAge, validateTalk, validateWatchedAt, validateRate,
+  (_req, res) => res.status(HTTP_OK_STATUS).send('Tudo nos conformes'),
+);
 
 app.listen(PORT, () => {
   console.log('Online');
