@@ -5,11 +5,14 @@ const rescue = require('express-rescue');
 const validateEmail = require('./middlewares/validateEmail');
 const validatePassword = require('./middlewares/validatePassword');
 const generateLoginToken = require('./middlewares/generateLoginToken');
+const validateName = require('./middlewares/validateName');
+const validateAge = require('./middlewares/validateAge');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
+const HTTP_ERROR_STATUS = 400;
 const PORT = '3000';
 
 const readFile = async (fileName) => {
@@ -40,13 +43,17 @@ app.get(
     const foundTalker = talkers.find((talker) => talker.id === Number(id));
     
     if (!foundTalker) {
-      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+      return res.status(HTTP_ERROR_STATUS).json({ message: 'Pessoa palestrante não encontrada' });
     }
-    return res.status(200).json(foundTalker);
+    return res.status(HTTP_OK_STATUS).json(foundTalker);
   }),
 );
 
 app.post('/login', validateEmail, validatePassword, generateLoginToken);
+
+app.post('/talker', validateName, validateAge, (_req, res) => res.status(
+  HTTP_OK_STATUS,
+).send('Tudo nos conformes'));
 
 app.listen(PORT, () => {
   console.log('Online');

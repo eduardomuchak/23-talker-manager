@@ -1,3 +1,5 @@
+const HTTP_OK_STATUS = 200;
+
 const tokenGenerator = () => {
   let randomToken = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -10,7 +12,7 @@ const tokenGenerator = () => {
 };
 
 const generateLoginToken = (_req, res) => {
-  res.status(200).json({ token: `${tokenGenerator()}` });
+  res.status(HTTP_OK_STATUS).json({ token: `${tokenGenerator()}` });
 };
 
 module.exports = generateLoginToken;
