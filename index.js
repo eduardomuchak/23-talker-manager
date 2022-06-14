@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 const rescue = require('express-rescue');
 const validateEmail = require('./middlewares/validateEmail');
 const validatePassword = require('./middlewares/validatePassword');
-const tokenGenerator = require('./middlewares/tokenGenerator');
+const generateLoginToken = require('./middlewares/generateLoginToken');
 
 const app = express();
 app.use(bodyParser.json());
@@ -46,7 +46,7 @@ app.get(
   }),
 );
 
-app.post('/login', validateEmail, validatePassword, tokenGenerator);
+app.post('/login', validateEmail, validatePassword, generateLoginToken);
 
 app.listen(PORT, () => {
   console.log('Online');
