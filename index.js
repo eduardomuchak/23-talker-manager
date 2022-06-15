@@ -16,6 +16,7 @@ const registerTalker = require('./middlewares/registerTalker');
 
 // HELPERS
 const readFile = require('./helpers/readFile');
+const editTalker = require('./middlewares/editTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -69,6 +70,17 @@ app.post(
   validateWatchedAt, 
   validateRate,
   registerTalker,
+);
+
+app.put(
+  '/talker/:id',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  editTalker,
 );
 
 app.listen(PORT, () => {
