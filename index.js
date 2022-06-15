@@ -18,12 +18,13 @@ const registerTalker = require('./middlewares/registerTalker');
 const readFile = require('./helpers/readFile');
 const editTalker = require('./middlewares/editTalker');
 const deleteTalker = require('./middlewares/deleteTalker');
+const searchTalker = require('./middlewares/searchTalker');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
-const HTTP_BAD_REQUEST_STATUS = 400;
+const HTTP_NOT_FOUND_STATUS = 404;
 const PORT = '3000';
 
 // não remova esse endpoint, e para o avaliador funcionar
@@ -42,6 +43,12 @@ app.get(
 );
 
 app.get(
+  '/talker/search',
+  validateToken,
+  searchTalker,
+);
+
+app.get(
   '/talker/:id',
   rescue(async (req, res) => {
     const talkers = await readFile('./talker.json');
@@ -49,7 +56,7 @@ app.get(
     const foundTalker = talkers.find((talker) => talker.id === Number(id));
     
     if (!foundTalker) {
-      return res.status(HTTP_BAD_REQUEST_STATUS).json(
+      return res.status(HTTP_NOT_FOUND_STATUS).json(
         { message: 'Pessoa palestrante não encontrada' },
       );
     }
