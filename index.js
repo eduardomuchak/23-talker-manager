@@ -17,12 +17,13 @@ const registerTalker = require('./middlewares/registerTalker');
 // HELPERS
 const readFile = require('./helpers/readFile');
 const editTalker = require('./middlewares/editTalker');
+const deleteTalker = require('./middlewares/deleteTalker');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
-const BAD_REQUEST = 400;
+const HTTP_BAD_REQUEST_STATUS = 400;
 const PORT = '3000';
 
 // não remova esse endpoint, e para o avaliador funcionar
@@ -48,7 +49,9 @@ app.get(
     const foundTalker = talkers.find((talker) => talker.id === Number(id));
     
     if (!foundTalker) {
-      return res.status(BAD_REQUEST).json({ message: 'Pessoa palestrante não encontrada' });
+      return res.status(HTTP_BAD_REQUEST_STATUS).json(
+        { message: 'Pessoa palestrante não encontrada' },
+      );
     }
     return res.status(HTTP_OK_STATUS).json(foundTalker);
   }),
@@ -81,6 +84,12 @@ app.put(
   validateWatchedAt,
   validateRate,
   editTalker,
+);
+
+app.delete(
+  '/talker/:id',
+  validateToken,
+  deleteTalker,
 );
 
 app.listen(PORT, () => {
